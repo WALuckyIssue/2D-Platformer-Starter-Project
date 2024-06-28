@@ -1,0 +1,138 @@
+[gd_scene load_steps=18 format=3 uid="uid://daysxbidmgr0n"]
+
+[ext_resource type="Script" path="res://Scripts/enemies/snail_enemy.gd" id="1_40n61"]
+[ext_resource type="Texture2D" uid="uid://bgfbbll22gh0u" path="res://Assets/Enemies/Snail/Walk (38x24).png" id="1_mst22"]
+[ext_resource type="AudioStream" uid="uid://bck5v3a102t52" path="res://Assets/Audio/Hit damage 1.wav" id="3_ji36p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1k5t"]
+atlas = ExtResource("1_mst22")
+region = Rect2(0, 0, 38, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_28uvc"]
+atlas = ExtResource("1_mst22")
+region = Rect2(38, 0, 38, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wnlkk"]
+atlas = ExtResource("1_mst22")
+region = Rect2(76, 0, 38, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0177"]
+atlas = ExtResource("1_mst22")
+region = Rect2(114, 0, 38, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kxsi2"]
+atlas = ExtResource("1_mst22")
+region = Rect2(152, 0, 38, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8yxp6"]
+atlas = ExtResource("1_mst22")
+region = Rect2(190, 0, 38, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hs2um"]
+atlas = ExtResource("1_mst22")
+region = Rect2(228, 0, 38, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0wt3o"]
+atlas = ExtResource("1_mst22")
+region = Rect2(266, 0, 38, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ld8k"]
+atlas = ExtResource("1_mst22")
+region = Rect2(304, 0, 38, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_54pys"]
+atlas = ExtResource("1_mst22")
+region = Rect2(342, 0, 38, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mn4ep"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d1k5t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_28uvc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wnlkk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0177")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kxsi2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8yxp6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hs2um")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0wt3o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ld8k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_54pys")
+}],
+"loop": true,
+"name": &"move",
+"speed": 15.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dwt2y"]
+size = Vector2(27, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a7lw1"]
+size = Vector2(36, 11.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mo362"]
+size = Vector2(29, 5)
+
+[node name="SnailEnemy" type="CharacterBody2D"]
+collision_layer = 4
+script = ExtResource("1_40n61")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -12)
+sprite_frames = SubResource("SpriteFrames_mn4ep")
+animation = &"move"
+autoplay = "move"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2.5, -7)
+shape = SubResource("RectangleShape2D_dwt2y")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(1, -5.75)
+shape = SubResource("RectangleShape2D_a7lw1")
+debug_color = Color(0.941176, 0.117647, 0.52549, 0.419608)
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(1.5, -19.5)
+shape = SubResource("RectangleShape2D_mo362")
+debug_color = Color(0, 0.643137, 0.27451, 0.419608)
+
+[node name="DownRay" type="RayCast2D" parent="."]
+position = Vector2(-14, 0)
+target_position = Vector2(0, 23)
+
+[node name="FrontRay" type="RayCast2D" parent="."]
+position = Vector2(0, -11)
+target_position = Vector2(-20, 0)
+
+[node name="hit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_ji36p")
+
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
